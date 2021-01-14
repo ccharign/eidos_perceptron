@@ -1,0 +1,1 @@
+Lien vers le binder : https://mybinder.org/v2/gh/ccharign/eidos_perceptron/b7140eba6ddc3e3da57114b62b352ddff9e6628a
