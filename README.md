@@ -1,7 +1,7 @@
  Dépôt pour l'atelier perceptron pour la journée EIDOS 2021.
 
 
-Lien vers le binder : https://mybinder.org/v2/gh/ccharign/eidos_perceptron/f9100d9fdac5c300a446da75e1a352159d1bf485
+Lien vers le binder : https://mybinder.org/v2/gh/ccharign/eidos_perceptron/79494f29da7a283dcfb53c28c7747dfef3894893
 
 - `à_remplir.ipynb` est le notebook que nous allons remplir.
 - `présentation` est la présentation beamer succinte pour la partie principale.
