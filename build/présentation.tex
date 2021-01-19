@@ -1,0 +1,132 @@
+\documentclass{présentation}
+
+\begin{document}
+
+
+\title{Un réseau de neurones simple}
+\author{Cyril Charignon}
+\date{20/01/2021}
+\maketitle{}
+
+
+
+\modePython
+
+\begin{frame}
+  \tableofcontents
+\end{frame}
+
+\section{Notations}
+
+
+\begin{frame}
+  \frametitle{Notations}
+
+  \pause
+
+  \begin{itemize}[<+->]
+  \item $(n,p)$ format des images à lire (matrices de 0 et de 1 à $n$ lignes et $p$ colonnes). Donc $n×p$ neurones d'entrée.
+    
+  \item $N_s=10$ nombre de sorties possibles.
+  \item Pour tout $(k,i,j)\in\entso{0,N_s}×\entso{0,n}×\entso{0,p}$, $P_{k,i,j}$ le coefficient de transmission du la synape entre le neurone d'entrée $(i,j)$ et le neurone de sortie $k$.
+  \item D'où le tableau $P$ de format $(N_s,n,p)$.
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Dessin ($N_e=4$, $N_s=4$)}
+\small
+  \begin{center}
+    \begin{tikzpicture}[->,>=stealth',shorten >=0pt,auto,node distance=1.5cm, thick,main node/.style={circle,draw}]
+      \node[state](00) {$(0,0)$};
+      \node[state](01)[right of=00] {$(0,1)$};
+      \node[state](10)[below of=00] {$(1,0)$};
+      \node[state](11)[right of=10] {$(1,1)$};
+      \node (rien)[right of=01] { };
+      \node[state] (1)[right of = rien]{1};
+      \node[state] (0) [above of = 1]{0};
+      \node[state] (2) [below of=1] {2};
+      \node[state] (3) [below of=2] {3};
+      
+      \path[every node/.style={font=\sffamily\small}]
+      
+      (00) edge [bend left] (1)
+      edge [bend left] (2)
+      edge [bend left] (3)
+      edge [bend left] (0)
+
+      (01) edge [bend left] (1)
+      edge [bend left] (2)
+      edge [bend left] (3)
+      edge [bend left] (0)
+
+      (10) edge [bend right] (1)
+      edge [bend right] (2)
+      edge [bend right] (3)
+      edge [bend right] (0)
+
+      (11) edge [bend right] (1)
+      edge [bend right] (2)
+      edge [bend right] (3)
+      edge [bend right] (0);   
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+
+\begin{frame}\frametitle{Activation}
+
+Soit $im$ une image.\pause
+  
+  \begin{itemize}[<+->]
+  \item $∀ k\in \entso{0,N_s}$ on pose :
+    \[\maj A(k, im, P) = \sum_{i=0}^{n-1}\sum_{j=0}^{p-1} P[k][i][j]×im[i][j] \]
+      la quantité de signal reçu par le neurone $k$.
+    \item Le neurone $k$ est dit activé lorsque $\maj A(k, im, P)\ge 1$.
+    \item But : pour tout $k$, lors de la lecture d'une image qui représente le chiffre $k$, le neurone $k$ et lui seul s'active.
+  \end{itemize}
+  
+\end{frame}
+
+\section{Programmation}
+
+
+\begin{frame}\frametitle{Lecture d'une image}
+
+  \begin{itemize}[<+->]
+  \item Programmer la fonction $\maj A$.
+  \item Programmer une fonction \texttt{sortiesActivées}.
+  \end{itemize}
+  
+\end{frame}
+
+
+
+\begin{frame}\frametitle{Correction des poids}
+
+On choisit un coefficient $η$ qui décide à quel vitesse on modifie nos neurones.\pause
+  
+  \begin{itemize}[<+->]
+  \item Pour tout $k\in\entso{0,N_s}$, lors de la lecture d'une image $im$, on décide que la valeur souhaitée est 2 si $im$ représente $k$, et -2 sinon.
+  \item On pose $err(k,im,P) = \maj A(k,im,k) - \text{valeur voulue}(k,im)$.
+    
+  \item Formule pour corriger le coeff $P[k][i][j]$ :
+    \[ P[k][i][j] += η× im[i][j]×err(k,im,P) \]
+  \end{itemize}
+  
+\end{frame}
+
+\begin{frame}\frametitle{Correction des poids : programmation}
+
+  \begin{itemize}[<+->]
+  \item La fonction \texttt{erreur}.
+  \item Procédure \texttt{lecture\_image} pour corriger tous les coeff de $P$ après lecture d'une image.
+  \item Procédure \texttt{lecture\_banque} pour lire plusieurs images.
+  \item Prédicat \texttt{tout\_juste} qui indique si toutes les images sont lues correctement.
+  \item Fonction finale !
+  \end{itemize}
+\end{frame}
+
+\end{document}
